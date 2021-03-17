@@ -3,12 +3,17 @@ import {Text, View, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+import NavbarFriends from '../NavbarFriends/';
+
 import avatar from '../../assets/user.png';
 
 export class Friends extends Component {
   render() {
     return (
+      // <View>
+
       <View style={styles.chatBody}>
+        <NavbarFriends />
         <ScrollView>
           <View style={styles.container}>
             <Text style={styles.statusSection}>Online - 3</Text>
@@ -114,6 +119,7 @@ export class Friends extends Component {
           </View>
         </ScrollView>
       </View>
+      // </View>
     );
   }
 }

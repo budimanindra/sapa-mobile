@@ -13,7 +13,7 @@ class NavbarNonMember extends Component {
           <TouchableOpacity>
             <Icon name="bars" size={18} color="white" />
           </TouchableOpacity>
-          <Text style={userName}>@ShiroTama</Text>
+          <Text style={userName}>@{this.props.receiverName}</Text>
           <TouchableOpacity>
             <Icon name="phone" size={18} color="white" />
           </TouchableOpacity>

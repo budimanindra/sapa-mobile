@@ -85,9 +85,7 @@ class Login extends Component {
               onPress={() => this.props.navigation.navigate('ForgotPassword')}>
               <Text style={styles.policy}>Use a password manager?</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.btnPrimary}
-              onPress={() => this.props.navigation.navigate('Home')}>
+            <TouchableOpacity style={styles.btnPrimary} onPress={this.doLogin}>
               <Text style={styles.btnText}>Login</Text>
             </TouchableOpacity>
           </View>
@@ -150,10 +148,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Login;
+const mapStateToProps = (state) => ({auth: state.auth});
 
-// const mapStateToProps = (state) => ({auth: state.auth});
+const mapDispatchToProps = {login};
 
-// const mapDispatchToProps = {register};
-
-// export default connect(mapStateToProps, mapDispatchToProps)(Register);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

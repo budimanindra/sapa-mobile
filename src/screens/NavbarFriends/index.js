@@ -13,10 +13,10 @@ class NavbarFriends extends Component {
           <Text style={text}>Friends</Text>
           <View style={row}>
             <TouchableOpacity style={iconSpace}>
-              <Icon name="comment" size={25} color="white" />
+              <Icon name="comment" size={20} color="white" />
             </TouchableOpacity>
             <TouchableOpacity>
-              <Icon name="user-plus" size={25} color="white" />
+              <Icon name="user-plus" size={20} color="white" />
             </TouchableOpacity>
           </View>
         </View>

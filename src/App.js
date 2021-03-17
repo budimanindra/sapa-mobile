@@ -1,20 +1,25 @@
 import React, {Component} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
+import {Provider} from 'react-redux';
+import {PersistGate} from 'redux-persist/integration/react';
 import FlashMessage from 'react-native-flash-message';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-const Tab = createBottomTabNavigator();
+
+import persistedStore from './redux/store';
 
 import Main from './screens/Main';
 
-export class App extends Component {
+export default class App extends Component {
   render() {
+    const {persistor, store} = persistedStore();
     return (
-      <NavigationContainer>
-        <Main />
-        <FlashMessage position="top" />
-      </NavigationContainer>
+      <PersistGate persistor={persistor}>
+        <Provider store={store}>
+          <NavigationContainer>
+            <Main />
+            <FlashMessage position="top" />
+          </NavigationContainer>
+        </Provider>
+      </PersistGate>
     );
   }
 }
-
-export default App;

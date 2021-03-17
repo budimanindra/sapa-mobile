@@ -2,9 +2,24 @@ import React, {Component} from 'react';
 import {Text, View, TouchableOpacity, StyleSheet, Image} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import logout from '../../assets/logout.png';
+import {showMessage} from 'react-native-flash-message';
 
-class NavbarNonMember extends Component {
+import {connect} from 'react-redux';
+
+import {logout} from '../../redux/actions/auth';
+
+import logoutPng from '../../assets/logout.png';
+
+class NavbarUserSettings extends Component {
+  doLogout = async () => {
+    await this.props.logout();
+    showMessage({
+      message: 'Success',
+      description: 'Succesfully logged out',
+      type: 'success',
+    });
+  };
+
   render() {
     const {header, row, iconSpace, text, logoutIcon} = styles;
     return (
@@ -12,8 +27,8 @@ class NavbarNonMember extends Component {
         <View style={header}>
           <Text style={text}>User Settings</Text>
           <View style={row}>
-            <TouchableOpacity style={iconSpace}>
-              <Image source={logout} style={logoutIcon} />
+            <TouchableOpacity style={iconSpace} onPress={this.doLogout}>
+              <Image source={logoutPng} style={logoutIcon} />
             </TouchableOpacity>
             <TouchableOpacity>
               <Icon name="ellipsis-v" size={25} color="white" />
@@ -52,4 +67,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export default NavbarNonMember;
+const mapStateToProps = (state) => ({auth: state.auth});
+
+const mapDispatchToProps = {logout};
+
+export default connect(mapStateToProps, mapDispatchToProps)(NavbarUserSettings);
