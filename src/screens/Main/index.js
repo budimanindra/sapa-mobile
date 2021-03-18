@@ -12,8 +12,15 @@ import NavbarChat from '../NavbarChat';
 import SplashScreen from '../SplashScreen';
 import Welcome from '../Welcome';
 import Friends from '../Friends';
+import AddFriend from '../AddFriend';
 import MyAccount from '../MyAccount';
 import ChatRoom from '../ChatRoom';
+import EditUsername from '../EditUsername';
+import EditPassword from '../EditPassword';
+import EditEmail from '../EditEmail';
+import NavbarEditUsername from '../NavbarEditUsername';
+import NavbarEditPassword from '../NavbarEditPassword';
+import NavbarEditEmail from '../NavbarEditEmail';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {View, Image} from 'react-native';
 import DM from '../DM';
@@ -134,11 +141,37 @@ class Main extends Component {
               component={ChatRoom}
             />
             <Stack.Screen
+              name="AddFriend"
+              options={{headerShown: false}}
+              component={AddFriend}
+            />
+            <Stack.Screen
               name="MyAccount"
               options={() => ({
                 header: (props) => <NavbarMyAccount {...props} />,
               })}
               component={MyAccount}
+            />
+            <Stack.Screen
+              name="EditUsername"
+              options={() => ({
+                header: (props) => <NavbarEditUsername {...props} />,
+              })}
+              component={EditUsername}
+            />
+            <Stack.Screen
+              name="EditEmail"
+              options={() => ({
+                header: (props) => <NavbarEditEmail {...props} />,
+              })}
+              component={EditEmail}
+            />
+            <Stack.Screen
+              name="EditPassword"
+              options={() => ({
+                header: (props) => <NavbarEditPassword {...props} />,
+              })}
+              component={EditPassword}
             />
           </React.Fragment>
         )}

@@ -15,7 +15,8 @@ class NavbarFriends extends Component {
             <TouchableOpacity style={iconSpace}>
               <Icon name="comment" size={20} color="white" />
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => this.props.navigation.navigate('MyAccount')}>
               <Icon name="user-plus" size={20} color="white" />
             </TouchableOpacity>
           </View>

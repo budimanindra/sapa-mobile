@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
+  Modal,
+  TextInput,
 } from 'react-native';
 
 import auth from '../../assets/auth.png';
@@ -20,11 +22,11 @@ import {connect} from 'react-redux';
 
 import http from '../../helpers/http';
 
-import {updateProfileDetails, getUser} from '../../redux/actions/auth';
+import {updateProfileDetails, getUser, logout} from '../../redux/actions/auth';
 
 import {showMessage} from 'react-native-flash-message';
 
-import {launchImageLibrary} from 'react-native-image-picker';
+import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
 
 class FloatingButton extends Component {
   render() {
@@ -38,8 +40,10 @@ class FloatingButton extends Component {
 
 class MyAccount extends Component {
   state = {
+    passwordVisible: true,
     visible: true,
     floatButtonVisible: false,
+    modalVisible: false,
     photo: null,
     email: '',
     password: '',
@@ -50,6 +54,10 @@ class MyAccount extends Component {
 
   setFloatButtonVisible = (visible) => {
     this.setState({floatButtonVisible: visible});
+  };
+
+  setModalVisible = (visible) => {
+    this.setState({modalVisible: visible});
   };
 
   openGallery = () => {
@@ -104,6 +112,14 @@ class MyAccount extends Component {
     }, 3000);
   };
 
+  doDeleteAccount = async () => {
+    const {password} = this.state;
+    const token = this.props.auth.token;
+    const params = new URLSearchParams();
+    params.append('password', password);
+    await http(token).delete('/auth/', params);
+  };
+
   async componentDidMount() {
     if (Object.keys(this.props.auth.profile).length === 0) {
       const token = this.props.auth.token;
@@ -112,9 +128,53 @@ class MyAccount extends Component {
   }
 
   render() {
+    const {modalVisible} = this.state;
     return (
       <View>
         <ScrollView>
+          <View style={styles.centeredModal}>
+            <Modal
+              animationType="fade"
+              transparent={true}
+              visible={modalVisible}
+              onRequestClose={() => {
+                this.setModalVisible(!modalVisible);
+              }}>
+              <View style={styles.centeredModal}>
+                <View style={styles.modalView}>
+                  <Text style={styles.modalTitleText}>Delete Account</Text>
+                  <Text style={styles.modalInfoText}>
+                    Are you sure that you want to delete your account? This will
+                    immedietly log you out of your account and you will not be
+                    able to log in again.
+                  </Text>
+                  <View style={styles.form}>
+                    <TextInput
+                      style={styles.textInput}
+                      placeholder="Password"
+                      placeholderTextColor="#51545b"
+                      secureTextEntry={this.state.passwordVisible}
+                      onChangeText={(password) => this.setState({password})}
+                    />
+                    <TouchableOpacity
+                      onPress={() =>
+                        this.setState({
+                          passwordVisible: !this.state.passwordVisible,
+                        })
+                      }>
+                      <Icon name="eye" color="grey" size={25} />
+                    </TouchableOpacity>
+                  </View>
+                  <TouchableOpacity
+                    style={styles.buttonSelected}
+                    onPress={this.doDeleteAccount}>
+                    <Text style={styles.textStyle}>Delete</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </Modal>
+          </View>
+
           <View style={styles.userInfo}>
             <View style={styles.rowCenter}>
               <TouchableOpacity onPress={() => this.openGallery()}>
@@ -136,13 +196,15 @@ class MyAccount extends Component {
 
           <View style={styles.userSettings}>
             <Text style={styles.textSettingsTitle}>ACCOUNT INFORMATION</Text>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => this.props.navigation.navigate('EditUsername')}>
               <View style={styles.rowBetween}>
                 <Text style={styles.key}>Username</Text>
                 <Text style={styles.value}>Indra &gt;</Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => this.props.navigation.navigate('EditEmail')}>
               <View style={styles.rowBetween}>
                 <Text style={styles.key}>Email</Text>
                 <Text style={styles.value}>budimanindra@gmail.com &gt;</Text>
@@ -154,7 +216,8 @@ class MyAccount extends Component {
                 <Text style={styles.value}>&gt;</Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => this.props.navigation.navigate('EditPassword')}>
               <View style={styles.rowBetween}>
                 <Text style={styles.key}>Change Password</Text>
                 <Text style={styles.value}>&gt;</Text>
@@ -185,7 +248,7 @@ class MyAccount extends Component {
                 <Text style={styles.key}>Disable Account</Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => this.setModalVisible(true)}>
               <View style={styles.rowBetween}>
                 <Text style={styles.keyDelete}>Delete Account</Text>
               </View>
@@ -314,10 +377,72 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
   },
+  centeredModal: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: '#363940',
+    padding: 35,
+    // alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    margin: 5,
+    // elevation: 2,
+    backgroundColor: 'white',
+  },
+  buttonSelected: {
+    borderRadius: 5,
+    padding: 10,
+    marginLeft: 150,
+    marginTop: 50,
+    backgroundColor: '#f04747',
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  modalTitleText: {
+    marginBottom: 15,
+    fontSize: 20,
+    color: 'white',
+    fontWeight: 'bold',
+  },
+  modalInfoText: {
+    marginBottom: 15,
+    textAlign: 'justify',
+    color: 'white',
+  },
+  form: {
+    borderRadius: 4,
+    borderBottomColor: '#51545b',
+    borderBottomWidth: 2,
+    paddingHorizontal: 20,
+    marginTop: 12,
+    marginBottom: 25,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  textInput: {
+    flex: 1,
+  },
 });
 
 const mapStateToProps = (state) => ({auth: state.auth});
 
-const mapDispatchToProps = {updateProfileDetails, getUser};
+const mapDispatchToProps = {updateProfileDetails, getUser, logout};
 
 export default connect(mapStateToProps, mapDispatchToProps)(MyAccount);

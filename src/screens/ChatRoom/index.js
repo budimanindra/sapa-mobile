@@ -120,7 +120,7 @@ class ChatRoom extends Component {
     return (
       <View style={styles.chatBody}>
         <NavbarChat receiverName={this.state.receiverName} />
-        <FlatList
+        {/* <FlatList
           inverted
           showsVerticalScrollIndicator={false}
           data={this.state.chatList}
@@ -128,8 +128,8 @@ class ChatRoom extends Component {
           keyExtractor={(item, index) => String(item.id)}
           renderItem={this.renderItem}
           onEndReached={this.props.onLoadMore}
-        />
-        {/* <ScrollView>
+        /> */}
+        <ScrollView>
           {this.state.chatList.map((chat) => (
             <View style={styles.user}>
               <TouchableOpacity>
@@ -160,7 +160,7 @@ class ChatRoom extends Component {
               </View>
             </View>
           ))}
-        </ScrollView> */}
+        </ScrollView>
         <View style={styles.row}>
           <TouchableOpacity>
             <Icon name="image" style={styles.iconForm} color="grey" size={20} />

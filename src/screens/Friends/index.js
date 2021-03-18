@@ -13,7 +13,22 @@ export class Friends extends Component {
       // <View>
 
       <View style={styles.chatBody}>
-        <NavbarFriends />
+        {/* <NavbarFriends /> */}
+        <View>
+          <View style={styles.header}>
+            <Text style={styles.text}>Friends</Text>
+            <View style={styles.row}>
+              <TouchableOpacity style={styles.iconSpace}>
+                <Icon name="comment" size={20} color="white" />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => this.props.navigation.navigate('AddFriend')}>
+                <Icon name="user-plus" size={20} color="white" />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+
         <ScrollView>
           <View style={styles.container}>
             <Text style={styles.statusSection}>Online - 3</Text>
@@ -158,6 +173,25 @@ const styles = StyleSheet.create({
   },
   icon: {
     paddingHorizontal: 20,
+  },
+  header: {
+    backgroundColor: '#2f3136',
+    paddingHorizontal: 20,
+    paddingVertical: 15,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  row: {
+    flexDirection: 'row',
+  },
+  iconSpace: {
+    marginRight: 30,
+  },
+  text: {
+    fontWeight: 'bold',
+    color: 'white',
+    fontSize: 20,
   },
 });
 
