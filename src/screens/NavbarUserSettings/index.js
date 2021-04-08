@@ -7,11 +7,13 @@ import {showMessage} from 'react-native-flash-message';
 import {connect} from 'react-redux';
 
 import {logout} from '../../redux/actions/auth';
+import {clearChat} from '../../redux/actions/chat';
 
 import logoutPng from '../../assets/logout.png';
 
 class NavbarUserSettings extends Component {
   doLogout = async () => {
+    await this.props.clearChat();
     await this.props.logout();
     showMessage({
       message: 'Success',
@@ -69,6 +71,6 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({auth: state.auth});
 
-const mapDispatchToProps = {logout};
+const mapDispatchToProps = {logout, clearChat};
 
 export default connect(mapStateToProps, mapDispatchToProps)(NavbarUserSettings);

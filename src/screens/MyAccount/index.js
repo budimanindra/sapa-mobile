@@ -24,6 +24,8 @@ import http from '../../helpers/http';
 
 import {updateProfileDetails, getUser, logout} from '../../redux/actions/auth';
 
+import {clearChat} from '../../redux/actions/chat';
+
 import {showMessage} from 'react-native-flash-message';
 
 import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
@@ -31,8 +33,10 @@ import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
 class FloatingButton extends Component {
   render() {
     return (
-      <TouchableOpacity onPress={() => this.props.uploadPhoto()}>
-        <Icon name="save" size={25} color="white" style={styles.floatingIcon} />
+      <TouchableOpacity
+        style={styles.floatingIcon}
+        onPress={() => this.props.uploadPhoto()}>
+        <Icon name="save" size={25} color="white" />
       </TouchableOpacity>
     );
   }
@@ -89,7 +93,6 @@ class MyAccount extends Component {
   };
 
   uploadPhoto = async () => {
-    console.log('bisa mas');
     const token = this.props.auth.token;
     const fileUpload = {
       uri: this.state.photo.uri,
@@ -114,10 +117,14 @@ class MyAccount extends Component {
 
   doDeleteAccount = async () => {
     const {password} = this.state;
+    console.log(password);
     const token = this.props.auth.token;
     const params = new URLSearchParams();
     params.append('password', password);
-    await http(token).delete('/auth/', params);
+    // delete tidak bisa mengirim data di body
+    await http(token).post('/auth/', params);
+    await this.props.clearChat();
+    await this.props.logout();
   };
 
   async componentDidMount() {
@@ -153,6 +160,7 @@ class MyAccount extends Component {
                       style={styles.textInput}
                       placeholder="Password"
                       placeholderTextColor="#51545b"
+                      color="#FFFFFF"
                       secureTextEntry={this.state.passwordVisible}
                       onChangeText={(password) => this.setState({password})}
                     />
@@ -189,8 +197,10 @@ class MyAccount extends Component {
                   }
                 />
               </TouchableOpacity>
-              <Text style={styles.userName}>Indra Budiman</Text>
-              <Text style={styles.userTag}>#1998</Text>
+              <Text style={styles.userName}>
+                {this.props.auth.profile.username}
+              </Text>
+              {/* <Text style={styles.userTag}>#1998</Text> */}
             </View>
           </View>
 
@@ -200,14 +210,18 @@ class MyAccount extends Component {
               onPress={() => this.props.navigation.navigate('EditUsername')}>
               <View style={styles.rowBetween}>
                 <Text style={styles.key}>Username</Text>
-                <Text style={styles.value}>Indra &gt;</Text>
+                <Text style={styles.value}>
+                  {this.props.auth.profile.username} &gt;
+                </Text>
               </View>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => this.props.navigation.navigate('EditEmail')}>
               <View style={styles.rowBetween}>
                 <Text style={styles.key}>Email</Text>
-                <Text style={styles.value}>budimanindra@gmail.com &gt;</Text>
+                <Text style={styles.value}>
+                  {this.props.auth.profile.email} &gt;
+                </Text>
               </View>
             </TouchableOpacity>
             <TouchableOpacity>
@@ -443,6 +457,6 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({auth: state.auth});
 
-const mapDispatchToProps = {updateProfileDetails, getUser, logout};
+const mapDispatchToProps = {updateProfileDetails, getUser, logout, clearChat};
 
 export default connect(mapStateToProps, mapDispatchToProps)(MyAccount);

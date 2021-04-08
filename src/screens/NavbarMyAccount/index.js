@@ -8,7 +8,8 @@ class NavbarMyAccount extends Component {
     return (
       <View>
         <View style={header}>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate('UserSettings')}>
             <Icon name="arrow-left" color="white" size={20} />
           </TouchableOpacity>
           <View style={col}>

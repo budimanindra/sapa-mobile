@@ -34,7 +34,6 @@ class Login extends Component {
     const params = new URLSearchParams();
     params.append('username', username);
     const results = await http(token).post('/friends/', params);
-    console.log('cek ini NDRA');
     console.log(results.data.message);
     if (results.data.message === 'Add friend success') {
       showMessage({

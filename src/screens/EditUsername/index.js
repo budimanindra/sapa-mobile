@@ -1,39 +1,24 @@
 import React, {Component} from 'react';
 import {
   ScrollView,
-  Text,
   View,
   TouchableOpacity,
   StyleSheet,
-  Image,
-  Modal,
   TextInput,
 } from 'react-native';
 
-import auth from '../../assets/auth.png';
-// import {REACT_APP_API_URL} from '@env';
-import avatar from '../../assets/user.png';
-
 import Icon from 'react-native-vector-icons/FontAwesome';
-
-import {REACT_APP_API_URL} from '@env';
 
 import {connect} from 'react-redux';
 
 import http from '../../helpers/http';
 
-import {updateProfileDetails, getUser, logout} from '../../redux/actions/auth';
-
 import {showMessage} from 'react-native-flash-message';
-
-import {launchImageLibrary} from 'react-native-image-picker';
 
 class EditUsername extends Component {
   state = {
     floatButtonVisible: false,
-    passwordVisible: true,
     username: '',
-    password: '',
   };
 
   updateUsername = async () => {
@@ -42,7 +27,7 @@ class EditUsername extends Component {
     const params = new URLSearchParams();
     params.append('username', username);
     const results = await http(token).patch(
-      '/profile/update-profile-username',
+      '/profile/update-profile-details',
       params,
     );
     if (results.data.message !== 'Successfully to edit profile') {
@@ -126,6 +111,4 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({auth: state.auth});
 
-const mapDispatchToProps = {updateProfileDetails, getUser, logout};
-
-export default connect(mapStateToProps, mapDispatchToProps)(EditUsername);
+export default connect(mapStateToProps, null)(EditUsername);

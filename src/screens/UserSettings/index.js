@@ -23,10 +23,10 @@ import avatar from '../../assets/user.png';
 
 class UserSettings extends Component {
   async componentDidMount() {
-    if (Object.keys(this.props.auth.profile).length === 0) {
+    this.props.navigation.addListener('focus', async () => {
       const token = this.props.auth.token;
       await this.props.getUser(token);
-    }
+    });
   }
 
   render() {
@@ -46,8 +46,10 @@ class UserSettings extends Component {
               }
             />
             <View style={styles.row}>
-              <Text style={styles.userName}>Indra Budiman</Text>
-              <Text style={styles.userTag}>#1998</Text>
+              <Text style={styles.userName}>
+                {this.props.auth.profile.username}
+              </Text>
+              {/* <Text style={styles.userTag}>#1998</Text> */}
             </View>
           </View>
 

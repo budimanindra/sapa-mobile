@@ -23,8 +23,6 @@ import {connect} from 'react-redux';
 import http from '../../helpers/http';
 import io from '../../helpers/socket';
 
-import {getUser} from '../../redux/actions/auth';
-
 class ChatRoom extends Component {
   state = {
     receiverId: 0,
@@ -53,17 +51,17 @@ class ChatRoom extends Component {
     this.chatList(receiverId);
 
     io.on(`${this.props.auth.profile.id}-${receiverId}`, (chat) => {
+      const chatNew = [];
+      chatNew.push(chat);
       const newChatList = this.state.chatList;
-      newChatList.push(chat);
-      this.setState({chatList: newChatList});
-      console.log(this.state.chatList);
+      this.setState({chatList: [...chatNew, ...newChatList]});
     });
 
     io.on(`${receiverId}-${this.props.auth.profile.id}`, (chat) => {
+      const chatNew = [];
+      chatNew.push(chat);
       const newChatList = this.state.chatList;
-      newChatList.push(chat);
-      this.setState({chatList: newChatList});
-      console.log(this.state.chatList);
+      this.setState({chatList: [...chatNew, ...newChatList]});
     });
   }
 
@@ -120,7 +118,7 @@ class ChatRoom extends Component {
     return (
       <View style={styles.chatBody}>
         <NavbarChat receiverName={this.state.receiverName} />
-        {/* <FlatList
+        <FlatList
           inverted
           showsVerticalScrollIndicator={false}
           data={this.state.chatList}
@@ -128,39 +126,7 @@ class ChatRoom extends Component {
           keyExtractor={(item, index) => String(item.id)}
           renderItem={this.renderItem}
           onEndReached={this.props.onLoadMore}
-        /> */}
-        <ScrollView>
-          {this.state.chatList.map((chat) => (
-            <View style={styles.user}>
-              <TouchableOpacity>
-                <Image
-                  style={styles.avatar}
-                  source={
-                    chat.sender_id === this.props.auth.profile.id
-                      ? this.props.auth.profile.photo !== null
-                        ? {
-                            uri: `${REACT_APP_API_URL}/${this.props.auth.profile.photo}`,
-                          }
-                        : avatar
-                      : this.state.receiverPhoto !== null
-                      ? {
-                          uri: `${REACT_APP_API_URL}/${this.state.receiverPhoto}`,
-                        }
-                      : avatar
-                  }
-                />
-              </TouchableOpacity>
-              <View style={styles.col}>
-                <Text style={styles.userName}>
-                  {chat.sender_id === this.props.auth.profile.id
-                    ? this.props.auth.profile.username
-                    : this.state.receiverName}
-                </Text>
-                <Text style={styles.message}>{chat.message}</Text>
-              </View>
-            </View>
-          ))}
-        </ScrollView>
+        />
         <View style={styles.row}>
           <TouchableOpacity>
             <Icon name="image" style={styles.iconForm} color="grey" size={20} />
@@ -173,6 +139,7 @@ class ChatRoom extends Component {
             keyboardType="default"
             placeholder="Message"
             onChangeText={(message) => this.setState({message})}
+            value={this.state.message}
           />
           <TouchableOpacity onPress={this.doSend}>
             <Icon

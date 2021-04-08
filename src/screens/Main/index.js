@@ -46,6 +46,41 @@ const IconBottom = (props) => {
   );
 };
 
+export const DMTab = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="DM" component={DM} options={{headerShown: false}} />
+    </Stack.Navigator>
+  );
+};
+
+export const FriendsTab = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Friends"
+        component={Friends}
+        options={{headerShown: false}}
+      />
+    </Stack.Navigator>
+  );
+};
+
+export const UserSettingsTab = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="UserSettings"
+        component={UserSettings}
+        options={{headerShown: false}}
+        // options={{
+        //   header: (props) => <HeaderContacts {...props} />,
+        // }}
+      />
+    </Stack.Navigator>
+  );
+};
+
 function HomeTabs() {
   return (
     <Tab.Navigator
@@ -55,7 +90,7 @@ function HomeTabs() {
         },
       }}>
       <Tab.Screen
-        component={DM}
+        component={DMTab}
         options={{
           title: '',
           tabBarIcon: (props) => (
@@ -68,7 +103,7 @@ function HomeTabs() {
         name="DM"
       />
       <Tab.Screen
-        component={Friends}
+        component={FriendsTab}
         options={{
           title: '',
           tabBarIcon: (props) => (
@@ -81,7 +116,7 @@ function HomeTabs() {
         name="Friends"
       />
       <Tab.Screen
-        component={UserSettings}
+        component={UserSettingsTab}
         options={{
           title: '',
           tabBarIcon: (props) => (
