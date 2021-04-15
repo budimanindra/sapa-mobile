@@ -8,7 +8,6 @@ import Register from '../Register';
 import ForgotPassword from '../ForgotPassword';
 import UserSettings from '../UserSettings';
 import NavbarMyAccount from '../NavbarMyAccount';
-import NavbarChat from '../NavbarChat';
 import SplashScreen from '../SplashScreen';
 import Welcome from '../Welcome';
 import Friends from '../Friends';
@@ -58,8 +57,8 @@ export const FriendsTab = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Friends"
-        component={Friends}
+        name="AddFriend"
+        component={AddFriend}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

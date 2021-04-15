@@ -16,8 +16,7 @@ class NavbarUserSettings extends Component {
     await this.props.clearChat();
     await this.props.logout();
     showMessage({
-      message: 'Success',
-      description: 'Succesfully logged out',
+      message: 'Succesfully logged out',
       type: 'success',
     });
   };

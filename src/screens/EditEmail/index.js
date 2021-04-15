@@ -11,6 +11,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {connect} from 'react-redux';
 
+import {updateProfileDetails} from '../../redux/actions/auth';
+
 import http from '../../helpers/http';
 
 import {showMessage} from 'react-native-flash-message';
@@ -25,13 +27,8 @@ class EditUsername extends Component {
   updateEmail = async () => {
     const {email} = this.state;
     const token = this.props.auth.token;
-    const params = new URLSearchParams();
-    params.append('email', email);
-    const results = await http(token).patch(
-      '/profile/update-profile-details',
-      params,
-    );
-    if (results.data.message !== 'Successfully to edit profile') {
+    await this.props.updateProfileDetails(token, email, '', '');
+    if (this.props.auth.errorMsg !== '') {
       showMessage({
         message: 'Failed',
         description: 'Failed to edit email',
@@ -40,9 +37,10 @@ class EditUsername extends Component {
     } else {
       showMessage({
         message: 'Success',
-        description: 'Successfully to edit profile',
+        description: 'Successfully to edit email',
         type: 'success',
       });
+      this.props.navigation.goBack('UserSettings');
     }
   };
 
@@ -112,4 +110,6 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => ({auth: state.auth});
 
-export default connect(mapStateToProps, null)(EditUsername);
+const mapDispatchToProps = {updateProfileDetails};
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditUsername);

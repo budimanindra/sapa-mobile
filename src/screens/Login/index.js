@@ -11,6 +11,8 @@ import {
 
 import imgBg from '../../assets/tes3.png';
 
+import {validatePassword, validateEmail} from '../../helpers/validation';
+
 import {connect} from 'react-redux';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -24,6 +26,8 @@ class Login extends Component {
     visible: true,
     email: '',
     password: '',
+    messagePassword: '',
+    messageEmail: '',
   };
 
   doLogin = async () => {
@@ -31,17 +35,32 @@ class Login extends Component {
     await this.props.login(email, password);
     if (this.props.auth.token !== null) {
       showMessage({
-        message: 'Success',
-        description: 'Login succesfully',
+        message: 'Successfully Login',
         type: 'success',
       });
     } else {
       showMessage({
-        message: 'Failed',
-        description: 'Login failed',
+        message: 'Failed to login',
+        description: 'Wrong email or password',
         type: 'danger',
       });
     }
+  };
+
+  handlePasswordChange = (password) => {
+    const {valid, message} = validatePassword(password);
+    if (valid) {
+      this.setState({password: password});
+    }
+    this.setState({messagePassword: message});
+  };
+
+  handleEmailChange = (email) => {
+    const {valid, message} = validateEmail(email);
+    if (valid) {
+      this.setState({email: email});
+    }
+    this.setState({messageEmail: message});
   };
 
   render() {
@@ -50,7 +69,12 @@ class Login extends Component {
         <ScrollView>
           <View style={styles.container}>
             <TouchableOpacity>
-              <Icon name="arrow-left" color="grey" size={25} />
+              <Icon
+                name="arrow-left"
+                color="grey"
+                size={25}
+                onPress={() => this.props.navigation.goBack()}
+              />
             </TouchableOpacity>
             <Text style={styles.welcomeBack}>Welcome back!</Text>
             <Text style={styles.welcomeExcited}>
@@ -61,28 +85,28 @@ class Login extends Component {
                 style={styles.form}
                 keyboardType="email-address"
                 placeholder="write your email"
-                onChangeText={(email) => this.setState({email})}
+                onChangeText={(email) => this.handleEmailChange(email)}
               />
             </View>
+            <Text style={styles.validation}>{this.state.messageEmail}</Text>
             <Text>Password</Text>
             <View style={styles.form}>
               <TextInput
                 style={styles.textInput}
                 placeholder="write your password"
                 secureTextEntry={this.state.visible}
-                onChangeText={(password) => this.setState({password})}
+                onChangeText={(password) => this.handlePasswordChange(password)}
               />
               <TouchableOpacity
                 onPress={() => this.setState({visible: !this.state.visible})}>
                 <Icon name="eye" color="grey" size={25} />
               </TouchableOpacity>
             </View>
-            <TouchableOpacity
-              onPress={() => this.props.navigation.navigate('ForgotPassword')}>
+            <Text style={styles.validation}>{this.state.messagePassword}</Text>
+            <TouchableOpacity>
               <Text style={styles.policy}>Forgot your password?</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => this.props.navigation.navigate('ForgotPassword')}>
+            <TouchableOpacity>
               <Text style={styles.policy}>Use a password manager?</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.btnPrimary} onPress={this.doLogin}>
@@ -104,6 +128,9 @@ const styles = StyleSheet.create({
   textInput: {
     flex: 1,
   },
+  validation: {
+    color: '#f54254',
+  },
   welcomeBack: {
     marginTop: 25,
     marginBottom: 15,
@@ -124,12 +151,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#FCFDFE',
     borderColor: '#DEDEDE',
     paddingHorizontal: 20,
-    marginTop: 12,
-    marginBottom: 25,
     flexDirection: 'row',
     alignItems: 'center',
   },
   policy: {
+    marginTop: 15,
     color: '#3C77AB',
   },
   bgImg: {

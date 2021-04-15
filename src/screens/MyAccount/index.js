@@ -83,8 +83,9 @@ class MyAccount extends Component {
       } else {
         showMessage({
           message: 'Successfully to select photo profile',
-          description: 'Please press upload photo image',
+          description: 'Please press upload photo image below',
           type: 'info',
+          autoHide: false,
         });
         this.setState({photo: response});
         this.setFloatButtonVisible(true);
@@ -104,9 +105,11 @@ class MyAccount extends Component {
     await http(token).patch('/profile/update-profile-photo', file);
     await this.props.getUser(token);
     showMessage({
-      message: 'Uploading your photo...',
+      message: 'Uploading your photo, pls wait a few seconds...',
       type: 'warning',
+      autoHide: false,
     });
+    this.setFloatButtonVisible(false);
     setTimeout(() => {
       showMessage({
         message: 'Successfully to update photo profile',
@@ -224,12 +227,12 @@ class MyAccount extends Component {
                 </Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity>
+            {/* <TouchableOpacity>
               <View style={styles.rowBetween}>
                 <Text style={styles.key}>Phone</Text>
                 <Text style={styles.value}>&gt;</Text>
               </View>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <TouchableOpacity
               onPress={() => this.props.navigation.navigate('EditPassword')}>
               <View style={styles.rowBetween}>
@@ -266,11 +269,6 @@ class MyAccount extends Component {
               <View style={styles.rowBetween}>
                 <Text style={styles.keyDelete}>Delete Account</Text>
               </View>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.btnSecondary}
-              onPress={() => this.uploadPhoto()}>
-              <Text style={styles.btnText}>Update Photo</Text>
             </TouchableOpacity>
           </View>
         </ScrollView>

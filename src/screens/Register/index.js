@@ -13,6 +13,12 @@ import imgBg from '../../assets/tes3.png';
 
 import {connect} from 'react-redux';
 
+import {
+  validatePassword,
+  validateEmail,
+  validateUsername,
+} from '../../helpers/validation';
+
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {showMessage} from 'react-native-flash-message';
@@ -25,6 +31,9 @@ class Register extends Component {
     email: '',
     username: '',
     password: '',
+    messagePassword: '',
+    messageEmail: '',
+    messageUsername: '',
   };
 
   doRegister = async () => {
@@ -45,13 +54,42 @@ class Register extends Component {
     }
   };
 
+  handlePasswordChange = (password) => {
+    const {valid, message} = validatePassword(password);
+    if (valid) {
+      this.setState({password: password});
+    }
+    this.setState({messagePassword: message});
+  };
+
+  handleEmailChange = (email) => {
+    const {valid, message} = validateEmail(email);
+    if (valid) {
+      this.setState({email: email});
+    }
+    this.setState({messageEmail: message});
+  };
+
+  handleUsernameChange = (username) => {
+    const {valid, message} = validateUsername(username);
+    if (valid) {
+      this.setState({username: username});
+    }
+    this.setState({messageUsername: message});
+  };
+
   render() {
     return (
       <ImageBackground source={imgBg} style={styles.bgImg}>
         <ScrollView>
           <View style={styles.container}>
             <TouchableOpacity>
-              <Icon name="arrow-left" color="grey" size={25} />
+              <Icon
+                name="arrow-left"
+                color="grey"
+                size={25}
+                onPress={() => this.props.navigation.goBack()}
+              />
             </TouchableOpacity>
             <Text style={styles.enterEmail}>Enter your email</Text>
             <View>
@@ -59,29 +97,35 @@ class Register extends Component {
                 style={styles.form}
                 keyboardType="email-address"
                 placeholder="write your email"
-                onChangeText={(email) => this.setState({email})}
+                onChangeText={(email) => this.handleEmailChange(email)}
               />
             </View>
+            <Text style={styles.validation}>{this.state.messageEmail}</Text>
+            <Text style={styles.validation}>{this.state.email}</Text>
             <View>
               <TextInput
                 style={styles.form}
                 keyboardType="email-address"
                 placeholder="write your username"
-                onChangeText={(username) => this.setState({username})}
+                onChangeText={(username) => this.handleUsernameChange(username)}
               />
             </View>
+            <Text style={styles.validation}>{this.state.messageUsername}</Text>
+            <Text style={styles.validation}>{this.state.username}</Text>
             <View style={styles.form}>
               <TextInput
                 style={styles.textInput}
                 placeholder="write your password"
                 secureTextEntry={this.state.visible}
-                onChangeText={(password) => this.setState({password})}
+                onChangeText={(password) => this.handlePasswordChange(password)}
               />
               <TouchableOpacity
                 onPress={() => this.setState({visible: !this.state.visible})}>
                 <Icon name="eye" color="grey" size={25} />
               </TouchableOpacity>
             </View>
+            <Text style={styles.validation}>{this.state.messagePassword}</Text>
+            <Text style={styles.validation}>{this.state.password}</Text>
             <Text style={styles.policy}>View our Privacy Policy</Text>
             <TouchableOpacity
               style={styles.btnPrimary}
@@ -112,6 +156,9 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
   },
+  validation: {
+    color: '#f54254',
+  },
   form: {
     borderRadius: 4,
     borderWidth: 1,
@@ -119,7 +166,6 @@ const styles = StyleSheet.create({
     borderColor: '#DEDEDE',
     paddingHorizontal: 20,
     marginTop: 12,
-    marginBottom: 25,
     flexDirection: 'row',
     alignItems: 'center',
   },
