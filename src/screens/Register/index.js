@@ -39,6 +39,7 @@ class Register extends Component {
   doRegister = async () => {
     const {email, username, password} = this.state;
     await this.props.register(email, username, password);
+    console.log(this.props.auth.errorMsg);
     if (this.props.auth.token !== null) {
       showMessage({
         message: 'Success',
@@ -47,8 +48,8 @@ class Register extends Component {
       });
     } else {
       showMessage({
-        message: 'Failed',
-        description: 'Failed to register an account',
+        message: 'Failed to register',
+        description: `${this.props.auth.errorMsg}`,
         type: 'danger',
       });
     }
@@ -59,6 +60,7 @@ class Register extends Component {
     if (valid) {
       this.setState({password: password});
     }
+    this.setState({password: password});
     this.setState({messagePassword: message});
   };
 
@@ -67,6 +69,7 @@ class Register extends Component {
     if (valid) {
       this.setState({email: email});
     }
+    this.setState({email: email});
     this.setState({messageEmail: message});
   };
 
@@ -75,6 +78,7 @@ class Register extends Component {
     if (valid) {
       this.setState({username: username});
     }
+    this.setState({username: username});
     this.setState({messageUsername: message});
   };
 
@@ -101,7 +105,6 @@ class Register extends Component {
               />
             </View>
             <Text style={styles.validation}>{this.state.messageEmail}</Text>
-            <Text style={styles.validation}>{this.state.email}</Text>
             <View>
               <TextInput
                 style={styles.form}
@@ -111,7 +114,6 @@ class Register extends Component {
               />
             </View>
             <Text style={styles.validation}>{this.state.messageUsername}</Text>
-            <Text style={styles.validation}>{this.state.username}</Text>
             <View style={styles.form}>
               <TextInput
                 style={styles.textInput}
@@ -125,7 +127,6 @@ class Register extends Component {
               </TouchableOpacity>
             </View>
             <Text style={styles.validation}>{this.state.messagePassword}</Text>
-            <Text style={styles.validation}>{this.state.password}</Text>
             <Text style={styles.policy}>View our Privacy Policy</Text>
             <TouchableOpacity
               style={styles.btnPrimary}

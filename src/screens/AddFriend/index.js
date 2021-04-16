@@ -47,6 +47,9 @@ class Login extends Component {
           'Add friend success !',
           `Say hi to ${username}`,
         );
+        this.setState({
+          username: '',
+        });
       } else if (results.data.message === 'You already add this user') {
         showMessage({
           message: 'Info',
@@ -80,6 +83,8 @@ class Login extends Component {
             style={styles.form}
             placeholder="Username"
             onChangeText={(username) => this.setState({username})}
+            value={this.state.username}
+            clearButtonMode="always"
           />
         </View>
         <TouchableOpacity style={styles.btnPrimary} onPress={this.doAddFriend}>

@@ -5,10 +5,7 @@ import {
   TextInput,
   StyleSheet,
   TouchableOpacity,
-  ScrollView,
   Image,
-  ImageBackground,
-  TouchableHighlightBase,
   FlatList,
 } from 'react-native';
 
@@ -39,6 +36,9 @@ class ChatRoom extends Component {
     params.append('receiver', this.state.receiverId);
     params.append('message', message);
     await http(token).post('/chat/', params);
+    this.setState({
+      message: '',
+    });
   };
 
   componentDidMount() {
@@ -140,6 +140,7 @@ class ChatRoom extends Component {
             placeholder="Message"
             onChangeText={(message) => this.setState({message})}
             value={this.state.message}
+            clearButtonMode="always"
           />
           <TouchableOpacity onPress={this.doSend}>
             <Icon
