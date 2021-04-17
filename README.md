@@ -1,7 +1,7 @@
 <h1 align='center'>Sapa !<br>Chatting Application</h1>
 
-![alt text](https://github.com/budimanindra/tickitz-mobile/blob/main/sssapa1.png?raw=true)
-![alt text](https://github.com/budimanindra/tickitz-mobile/blob/main/sssapa2.png?raw=true)
+![alt text](https://github.com/budimanindra/tickitz-mobile/blob/main/sssapa1.PNG?raw=true)
+![alt text](https://github.com/budimanindra/tickitz-mobile/blob/main/sssapa2.PNG?raw=true)
 <br>
 <br>
 
