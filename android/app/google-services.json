@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "837876019178",
+    "project_id": "sapa-mobile",
+    "storage_bucket": "sapa-mobile.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:837876019178:android:909eae8e9c7bc859e7cc93",
+        "android_client_info": {
+          "package_name": "com.sapa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "837876019178-ch8rha4r1ofrqg1kd9u2t9j194vrl5jh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbmrlx9spnxTQZGDMlAPg_oTAX2GmcTxc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "837876019178-ch8rha4r1ofrqg1kd9u2t9j194vrl5jh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
